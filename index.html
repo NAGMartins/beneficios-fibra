@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sorteio de Perfil & Necessidade | Profissional</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  body {
+      font-family: 'Inter', Arial, sans-serif;
+      background: linear-gradient(135deg, #f6f9fc 0%, #e2ecf9 100%);
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+  }
+  .container {
+      background: #fff;
+      max-width: 790px;
+      margin: 36px auto 0 auto;
+      border-radius: 14px;
+      box-shadow: 0 10px 40px rgba(50,60,170,0.08);
+      padding: 36px 30px 45px 30px;
+      text-align: center;
+  }
+  .logo {
+      max-width: 170px;
+      margin-bottom: 18px;
+      display: block;
+  }
+  h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #19334d;
+      margin: 18px 0 28px 0;
+      letter-spacing: -1px;
+  }
+  .btn-sortear {
+      background: linear-gradient(90deg, #3288ff 70%, #87c2f7 100%);
+      border: none;
+      color: #fff;
+      font-size: 1.18rem;
+      font-weight: 700;
+      padding: 13px 35px;
+      border-radius: 50px;
+      margin: 15px 0 10px 0;
+      cursor: pointer;
+      transition: background .18s;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 14px rgba(50,136,255,0.12);
+  }
+  .btn-sortear:active {
+      background: linear-gradient(90deg, #2e79df 70%, #67aee6 100%);
+  }
+  .resultado {
+      margin-top: 38px;
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      gap: 38px;
+      flex-wrap: nowrap;
+      min-height: 260px;
+  }
+  .cartao {
+      background: linear-gradient(120deg, #f3f8fd 60%, #ffffff 100%);
+      border: 1.3px solid #dde5eb;
+      border-radius: 16px;
+      min-width: 270px;
+      max-width: 320px;
+      box-shadow: 0 1px 18px 0 rgba(50, 130, 220, 0.06);
+      padding: 16px 18px 14px 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: box-shadow .15s;
+  }
+  .cartao img {
+      max-width: 200px;
+      max-height: 200px;
+      border-radius: 12px;
+      margin-bottom: 13px;
+      box-shadow: 0 2px 8px rgba(50,110,180,0.08);
+      background: #f5f6fa;
+      object-fit: contain;
+  }
+  .cartao p {
+      color: #283e58;
+      font-weight: 600;
+      font-size: 1.07rem;
+      letter-spacing: 0.1px;
+      margin: 0;
+      margin-top: 6px;
+      word-break: break-word;
+  }
+  .rodape {
+      margin-top: 42px;
+      color: #99aabb;
+      text-align: center;
+      font-size: 0.92rem;
+      letter-spacing: 0;
+  }
+  @media (max-width: 800px) {
+      .container { padding: 14px 6px 28px 6px; }
+      .resultado { flex-wrap: wrap; }
+      .cartao { min-width: 95vw; max-width: 95vw; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Logotipo inserido aqui -->
+  <img src="logo.png" alt="Logotipo" class="logo" />
+  <h1>Sorteio de Perfil & Necessidade</h1>
+
+  <button class="btn-sortear" id="sortearBtn">Sortear Perfil e Necessidade</button>
+
+  <div class="resultado" id="resultado"></div>
+  <div class="rodape">Powered by [Academia Comercial]</div>
+</div>
+
+<script>
+  // Perfis (pode editar imagens/textos)
+  const perfisOriginais = [
+       { texto: "Idoso", imagem: "Picture11.jpg" },
+    { texto: "Família com crianças", imagem: "Picture12.jpg" },
+    { texto: "Profissional em teletrabalho", imagem: "Picture13.jpg" },
+    { texto: "Estudante", imagem: "Picture14.jpg" },
+    { texto: "Gamer", imagem: "Picture15.jpg" },
+    { texto: "Família com múltiplos dispositivos", imagem: "Picture16.jpg" },
+    { texto: "Mãe separada, com um filho adolescente", imagem: "Picture17.jpg" },
+    { texto: "Inquilino no apartamento", imagem: "Picture18.jpg" },
+    { texto: "Casal jovem sempre conectado", imagem: "Picture19.jpg" }
+  ];
+
+  const necessidadesOriginais = [
+    { texto: "Jogar videojogos online sem lags", imagem: "Picture1.jpg" },
+    { texto: "Ver filmes e séries em 4K", imagem: "Picture2.jpg" },
+    { texto: "Vários dispositivos ligados simultaneamente", imagem: "Picture3.jpg" },
+    { texto: "Participar em aulas online sem interrupções", imagem: "Picture4.jpg" },
+    { texto: "Transferir ficheiros pesados sem demoras", imagem: "Picture5.jpg" },
+    { texto: "Assistir a eventos desportivos ao vivo sem atrasos", imagem: "Picture6.jpg" },
+    { texto: "Trabalhar em casa com plataformas colaborativas sem falhas", imagem: "Picture7.jpg" },
+    { texto: "Dispositivos inteligentes sempre conectados", imagem: "Picture8.jpg" },
+    { texto: "Fazer chamadas de vídeo em grupo", imagem: "Picture9.jpg" },
+    { texto: "Gerir câmaras de videovigilância", imagem: "Picture10.jpg" }
+  ];
+
+
+  let perfisDisponiveis = [...perfisOriginais];
+  let necessidadesDisponiveis = [...necessidadesOriginais];
+
+  const btnSortear = document.getElementById('sortearBtn');
+  const resultadoDiv = document.getElementById('resultado');
+
+  btnSortear.addEventListener('click', () => {
+    if (perfisDisponiveis.length === 0 || necessidadesDisponiveis.length === 0) {
+      alert('Todos os perfis e necessidades já foram sorteados. As listas serão reiniciadas.');
+      perfisDisponiveis = [...perfisOriginais];
+      necessidadesDisponiveis = [...necessidadesOriginais];
+    }
+
+    const indicePerfil = Math.floor(Math.random() * perfisDisponiveis.length);
+    const indiceNecessidade = Math.floor(Math.random() * necessidadesDisponiveis.length);
+
+    const perfilSorteado = perfisDisponiveis[indicePerfil];
+    const necessidadeSorteada = necessidadesDisponiveis[indiceNecessidade];
+
+    perfisDisponiveis.splice(indicePerfil, 1);
+    necessidadesDisponiveis.splice(indiceNecessidade, 1);
+
+    resultadoDiv.innerHTML = `
+      <div class="cartao">
+        <img src="${perfilSorteado.imagem}" alt="${perfilSorteado.texto}" />
+        <p>${perfilSorteado.texto}</p>
+      </div>
+      <div class="cartao">
+        <img src="${necessidadeSorteada.imagem}" alt="${necessidadeSorteada.texto}" />
+        <p>${necessidadeSorteada.texto}</p>
+      </div>
+    `;
+  });
+</script>
+
+</body>
+</html>
